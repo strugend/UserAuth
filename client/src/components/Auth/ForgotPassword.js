@@ -14,6 +14,7 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { IconButton } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const theme = createTheme();
 
@@ -30,8 +31,21 @@ const ForgotPassword = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     console.log(values);
-    alert("OTP sent to email address");
-    navigate("/resetpassword");
+
+    axios
+      .post("http://localhost:5000/forgotpassword", { email: values.email })
+      .then(function (response) {
+        console.log(response.data);
+        // window.alert("Login Successful!");
+        console.log("Password Reset Link Sent Successful!");
+        navigate("/");
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    alert("Reset Link sent to email address");
+    navigate("/");
   };
 
   return (

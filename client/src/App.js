@@ -1,5 +1,11 @@
 import React from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useParams,
+} from "react-router-dom";
 import SignIn from "../src/pages/SignIn";
 import SignUp from "../src/pages/SignUp";
 import ForgotPassword from "../src/pages/ForgotPassword";
@@ -12,8 +18,12 @@ const App = () => {
         <Route path="/signin" element={<SignIn />} />
         <Route exact path="/SignUp" element={<SignUp />} />
         <Route exact path="/forgotpassword" element={<ForgotPassword />} />
-        <Route exact path="/resetpassword" element={<ResetPassword />} />
-        <Route path="*" element={<Navigate to="/signup" replace />} />
+        <Route
+          exact
+          path="/resetpassword/:resetToken"
+          element={<ResetPassword />}
+        />
+        <Route path="*" element={<Navigate to="/signin" replace />} />
       </Routes>
     </BrowserRouter>
   );

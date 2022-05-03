@@ -13,12 +13,14 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { IconButton } from "@mui/material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
 const SignUpForm = () => {
+  const navigate = useNavigate();
   const [values, setValues] = useState({
-    message: "",
     username: "",
     email: "",
     password: "",
@@ -32,6 +34,24 @@ const SignUpForm = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (values.password === values.confirmPassword) {
+      axios
+        .post("http://localhost:5000/register", {
+          username: values.username,
+          email: values.email,
+          password: values.password,
+          confirmPassword: values.confirmPassword,
+        })
+        .then(function (response) {
+          console.log(response);
+          // window.alert("Registration Successful!");
+          console.log("Registration Successful!");
+          navigate("/signin");
+        })
+        .catch(function (error) {
+          console.log(error);
+          window.alert("Invalid Registration!");
+          console.log("Invalid Registration!");
+        });
       alert("Signup Success");
       console.log(values);
     } else {

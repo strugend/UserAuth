@@ -13,12 +13,16 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { IconButton } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 const theme = createTheme();
 
-const OtpPassword = () => {
+const ResetPassword = ({ match }) => {
+  const navigate = useNavigate();
+  let { resetToken } = useParams();
   const [values, setValues] = useState({
-    otp: "",
     password: "",
     confirmPassword: "",
   });
@@ -30,7 +34,21 @@ const OtpPassword = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (values.password === values.confirmPassword) {
+      axios
+        .put(`http://localhost:5000/resetpassword/${resetToken}`, {
+          password: values.password,
+        })
+        .then(function (response) {
+          console.log(response.data);
+          // window.alert("Login Successful!");
+          console.log("Password Reset Successful!");
+          navigate("/signin");
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
       alert("Success !!New Password Created ");
+      // navigate("/signin");
       console.log(values);
     } else {
       alert("Password Don't Match");
@@ -67,7 +85,7 @@ const OtpPassword = () => {
             Create New Password
           </Typography>
           <form onSubmit={submitHandler}>
-            <TextField
+            {/* <TextField
               value={values.otp}
               onChange={handleChange("otp")}
               margin="normal"
@@ -78,7 +96,7 @@ const OtpPassword = () => {
               name="OTP"
               autoFocus
               type="number"
-            />
+            /> */}
             <TextField
               value={values.password}
               onChange={handleChange("password")}
@@ -132,4 +150,4 @@ const OtpPassword = () => {
     </ThemeProvider>
   );
 };
-export default OtpPassword;
+export default ResetPassword;

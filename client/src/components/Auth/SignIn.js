@@ -13,10 +13,13 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { IconButton } from "@mui/material";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
-const SignUpForm = () => {
+const SignInForm = () => {
+  const navigate = useNavigate();
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -29,8 +32,26 @@ const SignUpForm = () => {
   const submitHandler = (e) => {
     e.preventDefault();
     if (values.email !== "" && values.password !== "") {
-      alert("Login Success");
       console.log(values);
+      axios
+        .post("http://localhost:5000/signin", {
+          email: values.email,
+          password: values.password,
+        })
+        .then(function (response) {
+          console.log(response.data);
+          // window.alert("Login Successful!");
+          console.log("Login Successful!");
+          localStorage.setItem("jwt", response.data.token);
+          localStorage.setItem("user", JSON.stringify(response.data.user));
+          navigate("/");
+        })
+        .catch(function (error) {
+          console.log(error);
+          window.alert("Invalid Credentials!");
+          console.log("Invalid Credentials!");
+        });
+      alert("Login Success");
     } else {
       alert("Please Enter Valid Details");
       // console.log(values);
@@ -124,4 +145,4 @@ const SignUpForm = () => {
     </ThemeProvider>
   );
 };
-export default SignUpForm;
+export default SignInForm;
