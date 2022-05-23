@@ -12,10 +12,6 @@ const sendEmail = require("../utils/sendEmail");
 // const cookieParser = require("cookie-parser");
 // router.use(cookieParser) ;
 
-router.get("/", (req, res) => {
-  res.send(`Hello World from the Server in auth.js`);
-});
-
 //using async await
 router.post("/register", async (req, res) => {
   const { username, email, password, confirmPassword } = req.body;
@@ -102,7 +98,7 @@ router.post("/forgotpassword", async (req, res) => {
 
     await user.save();
 
-    const resetUrl = `http://localhost:3000/user/resetpassword/${resetToken}`;
+    const resetUrl = `https://aarya-global2.vercel.app/user/resetpassword/${resetToken}`;
     // console.log(resetUrl);
     const message = `
       <h1>You have requested a password reset </h1>
